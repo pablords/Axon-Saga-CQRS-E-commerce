@@ -23,35 +23,35 @@ public class CheckoutAggregate {
 
     @CommandHandler
     public CheckoutAggregate(CreateCheckoutCommand cmd) {
-        logger.info("📝 [AGGREGATE] Processando comando CreateCheckout | CheckoutId: {} | UserId: {}", 
+        logger.info("[AGGREGATE] Processando comando CreateCheckout | CheckoutId: {} | UserId: {}", 
                    cmd.checkoutId, cmd.userId);
         
         apply(new CheckoutCreatedEvent(cmd.checkoutId, cmd.userId));
         
-        logger.info("📤 [AGGREGATE] Evento CheckoutCreated aplicado | CheckoutId: {}", cmd.checkoutId);
+        logger.info("[AGGREGATE] Evento CheckoutCreated aplicado | CheckoutId: {}", cmd.checkoutId);
     }
 
     @EventSourcingHandler
     public void on(CheckoutCreatedEvent event) {
-        logger.info("💾 [AGGREGATE] Aplicando evento CheckoutCreated | CheckoutId: {}", event.checkoutId);
+        logger.info("[AGGREGATE] Aplicando evento CheckoutCreated | CheckoutId: {}", event.checkoutId);
         this.checkoutId = event.checkoutId;
     }
 
     @CommandHandler
     public void handle(CompleteCheckoutCommand cmd) {
-        logger.info("✅ [AGGREGATE] Processando comando CompleteCheckout | CheckoutId: {}", cmd.checkoutId);
+        logger.info("[AGGREGATE] Processando comando CompleteCheckout | CheckoutId: {}", cmd.checkoutId);
         
         apply(new CheckoutCompletedEvent(cmd.checkoutId));
         
-        logger.info("📤 [AGGREGATE] Evento CheckoutCompleted aplicado | CheckoutId: {}", cmd.checkoutId);
+        logger.info("[AGGREGATE] Evento CheckoutCompleted aplicado | CheckoutId: {}", cmd.checkoutId);
     }
 
     @CommandHandler
     public void handle(CancelCheckoutCommand cmd) {
-        logger.warn("❌ [AGGREGATE] Processando comando CancelCheckout | CheckoutId: {}", cmd.checkoutId);
+        logger.warn("[AGGREGATE] Processando comando CancelCheckout | CheckoutId: {}", cmd.checkoutId);
         
         apply(new CheckoutCancelledEvent(cmd.checkoutId));
         
-        logger.info("📤 [AGGREGATE] Evento CheckoutCancelled aplicado | CheckoutId: {}", cmd.checkoutId);
+        logger.info("[AGGREGATE] Evento CheckoutCancelled aplicado | CheckoutId: {}", cmd.checkoutId);
     }
 }

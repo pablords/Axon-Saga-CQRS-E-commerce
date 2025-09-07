@@ -1,5 +1,7 @@
 package com.example.ecommerce.command;
 
+import java.util.UUID;
+
 import org.axonframework.modelling.command.TargetAggregateIdentifier;
 
 public class ReserveInventoryCommand {
@@ -10,7 +12,7 @@ public class ReserveInventoryCommand {
     public final int quantity;
 
     public ReserveInventoryCommand(String checkoutId, String productId, int quantity) {
-        this.inventoryId = "inventory-" + productId + "-" + checkoutId; // Gerar ID único
+        this.inventoryId = UUID.randomUUID().toString();
         this.checkoutId = checkoutId;
         this.productId = productId;
         this.quantity = quantity;

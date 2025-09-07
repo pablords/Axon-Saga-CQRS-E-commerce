@@ -27,23 +27,23 @@ public class InventoryAggregate {
 
     @CommandHandler
     public InventoryAggregate(ReserveInventoryCommand cmd) {
-        logger.info("📦 [INVENTORY] Processando comando ReserveInventory | InventoryId: {} | CheckoutId: {} | Produto: {} | Quantidade: {}", 
+        logger.info("[INVENTORY] Processando comando ReserveInventory | InventoryId: {} | CheckoutId: {} | Produto: {} | Quantidade: {}", 
                    cmd.inventoryId, cmd.checkoutId, cmd.productId, cmd.quantity);
         
         // Simula verificação de estoque - sempre aceita por simplicidade
-        apply(new InventoryReservedEvent(cmd.checkoutId, cmd.productId, cmd.quantity));
+        apply(new InventoryReservedEvent(cmd.checkoutId, cmd.productId, cmd.quantity, cmd.inventoryId));
         
-        logger.info("📤 [INVENTORY] Evento InventoryReserved aplicado | InventoryId: {} | CheckoutId: {} | Produto: {}", 
+        logger.info("[INVENTORY] Evento InventoryReserved aplicado | InventoryId: {} | CheckoutId: {} | Produto: {}", 
                    cmd.inventoryId, cmd.checkoutId, cmd.productId);
     }
 
     @EventSourcingHandler
     public void on(InventoryReservedEvent event) {
-        logger.info("💾 [INVENTORY] Aplicando evento InventoryReserved | CheckoutId: {} | Produto: {}", 
+        logger.info("[INVENTORY] Aplicando evento InventoryReserved | CheckoutId: {} | Produto: {}", 
                    event.checkoutId, event.productId);
         this.checkoutId = event.checkoutId;
         this.productId = event.productId;
         this.reservedQuantity = event.quantity;
-        this.inventoryId = "inventory-" + event.productId + "-" + event.checkoutId;
+        this.inventoryId = event.inventoryId;
     }
 }

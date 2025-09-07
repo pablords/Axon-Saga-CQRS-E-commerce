@@ -24,12 +24,12 @@ public class CheckoutController {
     public String createCheckout(@RequestParam String userId) {
         String checkoutId = UUID.randomUUID().toString();
         
-        logger.info("🌐 [CONTROLLER] Recebida requisição de checkout | UserId: {} | CheckoutId: {}", 
+        logger.info("[CONTROLLER] Recebida requisição de checkout | UserId: {} | CheckoutId: {}", 
                    userId, checkoutId);
         
         commandGateway.send(new CreateCheckoutCommand(checkoutId, userId));
         
-        logger.info("📨 [CONTROLLER] Comando CreateCheckout enviado | CheckoutId: {}", checkoutId);
+        logger.info("[CONTROLLER] Comando CreateCheckout enviado | CheckoutId: {}", checkoutId);
         
         return "Checkout iniciado: " + checkoutId;
     }

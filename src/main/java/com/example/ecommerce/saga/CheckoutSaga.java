@@ -22,34 +22,34 @@ public class CheckoutSaga {
     @StartSaga
     @SagaEventHandler(associationProperty = "checkoutId")
     public void on(CheckoutCreatedEvent event) {
-        logger.info("🚀 [SAGA] Checkout criado para usuário: {} | CheckoutId: {}", 
+        logger.info("[SAGA] Checkout criado para usuário: {} | CheckoutId: {}", 
                    event.userId, event.checkoutId);
-        logger.info("📦 [SAGA] Enviando comando para reservar inventário...");
+        logger.info("[SAGA] Enviando comando para reservar inventário...");
         
         commandGateway.send(new ReserveInventoryCommand(event.checkoutId, "product-123", 2));
     }
 
     @SagaEventHandler(associationProperty = "checkoutId")
     public void on(InventoryReservedEvent event) {
-        logger.info("✅ [SAGA] Inventário reservado! Produto: {} | Quantidade: {} | CheckoutId: {}", 
+        logger.info("[SAGA] Inventário reservado! Produto: {} | Quantidade: {} | CheckoutId: {}", 
                    event.productId, event.quantity, event.checkoutId);
-        logger.info("🎯 [SAGA] Enviando comando para finalizar checkout...");
+        logger.info("[SAGA] Enviando comando para finalizar checkout...");
         
         commandGateway.send(new CompleteCheckoutCommand(event.checkoutId));
     }
 
     @SagaEventHandler(associationProperty = "checkoutId")
     public void on(CheckoutCompletedEvent event) {
-        logger.info("🎉 [SAGA] Checkout finalizado com sucesso! CheckoutId: {}", event.checkoutId);
-        logger.info("🏁 [SAGA] Encerrando saga...");
+        logger.info("[SAGA] Checkout finalizado com sucesso! CheckoutId: {}", event.checkoutId);
+        logger.info("[SAGA] Encerrando saga...");
         
         SagaLifecycle.end();
     }
 
     @SagaEventHandler(associationProperty = "checkoutId")
     public void on(CheckoutCancelledEvent event) {
-        logger.warn("❌ [SAGA] Checkout cancelado! CheckoutId: {}", event.checkoutId);
-        logger.info("🏁 [SAGA] Encerrando saga...");
+        logger.warn("[SAGA] Checkout cancelado! CheckoutId: {}", event.checkoutId);
+        logger.info("[SAGA] Encerrando saga...");
         
         SagaLifecycle.end();
     }
